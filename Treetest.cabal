@@ -19,11 +19,13 @@ library
                       ,TreeSimple
                       ,TreeOpt
                       ,Tree
+                      ,Parser
   ghc-options:         -fno-warn-tabs -XMagicHash
   build-depends:       base >= 4.7 && < 5
                       ,array  
 --unboxed
                       ,words
+                      ,parsec
 --                      ,int >= 0.1.2
                       ,bits
   default-language:    Haskell2010

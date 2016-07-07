@@ -13,7 +13,10 @@ instance Tree TreeS where
 instance Show TreeS where 
 	show (Leaf x) = show x 
 	show (Node l r) = "(" ++ (show l) ++ " " ++ (show r)++ ")" 
-
+{-
+instance Read TreeS where 
+	read 
+-}
 leftDepth :: TreeS -> Int
 leftDepth x = 
 	let lD d (Leaf x) = d
