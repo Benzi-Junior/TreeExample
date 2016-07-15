@@ -31,6 +31,7 @@ boxNode [OLeaf x] = Leaf x
 
 
 
+
 indexList :: [a] -> [(Int,a)]
 indexList x  =  accumelatedindex 0 x 
 	where   accumelatedindex i [] = []
@@ -56,7 +57,10 @@ instance IArray UArray TreeS where
 instance Tree TreeO where
 	--leafSum :: Tree -> Int
 	--leafSum LeftArray = 0
-	leafSum x = 1
+	leafSum (RootNode arr) = (sum (amap nodeValue arr)) where 
+		nodeValue :: TreeON -> Int
+		nodeValue (RightPointer right) = leafSum right
+		nodeValue (OLeaf x) = x
 
 firstlove :: Array Int Int
 firstlove = array (0, 4) [(i, 0) | i <- [0..4]]

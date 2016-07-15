@@ -17,6 +17,8 @@ library
   hs-source-dirs:      src
   exposed-modules:     Lib
                       ,TreeSimple
+                      ,TreeFlat
+                      ,TreeIOFlat
                       ,TreeOpt
                       ,Tree
                       ,Parser
@@ -26,6 +28,8 @@ library
 --unboxed
                       ,words
                       ,parsec
+                      ,vector
+                      ,vector-th-unbox
 --                      ,int >= 0.1.2
                       ,bits
   default-language:    Haskell2010
