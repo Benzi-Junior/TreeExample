@@ -1,16 +1,13 @@
 import TestIOFlat
 import TestFlat
---import TestOpt
+import TestOpt
 import TestSimple
 --import TreeO
 
 main :: IO ()
 main = do
-	putStrLn "Running test for Simple"
-	TestSimple.runtest "test/TreeSample"
---	putStrLn "Running test for Opt"
---	TestOpt.runtest "test/TreeSample"
-	putStrLn "Running test for Flat"
-	TestFlat.runtest "test/TreeSample"
-	putStrLn "Running test for IOFlat"
-	TestIOFlat.runtest "test/TreeSample"
+	let fileName= "app/TreeSample" 
+	TestSimple.runtest fileName
+	TestOpt.runtest fileName
+	TestFlat.runtest fileName
+	TestIOFlat.runtest fileName

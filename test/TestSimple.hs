@@ -18,16 +18,26 @@ instance NFData TreeS where
 
 runtest :: String -> IO ()
 runtest fileName = do
---	fileName <- getArgs
+	putStrLn "\nRunning tests and benchmarks for TreeSimple"
 	strm <- readFile  fileName
-	let tree = doParse $! strm
-	--let tree = force $ doParse strm
-	start <- getTime Monotonic
-        let sum = leafSum tree
-	putStrLn $ show sum
-	end <- getTime Monotonic
-	fprint (timeSpecs % string) start end "\n"
 
+	
+	start <- getTime Monotonic
+	let tree = force $ doParse strm
+	--forceEval tree
+	construct  <- getTime Monotonic
+	putStr "Simple tree constucted in: " 
+	fprint (timeSpecs % string) start construct "\n"
+        let sum = leafSum tree
+	putStrLn $ "Sum computed: " ++ (show sum)
+	first <- getTime Monotonic
+	putStr "Leafsum computed in: "
+	fprint (timeSpecs % string) construct first "\n"
+        let sum2 = leafSum tree
+	putStrLn $ "Sum computed: " ++ (show sum2)
+	end <- getTime Monotonic
+	putStr "repeat computation run in: "
+	fprint (timeSpecs % string) first end "\n"
 
 
 

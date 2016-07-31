@@ -22,3 +22,9 @@ leftDepth x =
 	let lD d (Leaf x) = d
 	    lD d (Node l r) = lD (d+1) l 
 	in lD 0 x
+
+forceEval :: TreeS -> IO ()
+forceEval (Node l r)	= do
+				forceEval l
+				forceEval r
+forceEval (Leaf x)	= return () 

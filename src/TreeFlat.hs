@@ -29,11 +29,21 @@ plainFlatten tree = U.fromList   (treeToList tree)
 
 
 
-
 instance Tree FlatTree where 
 --	leafSum :: FlatTree -> Int
-	leafSum tree = h 0 where
-			h i | (tree U.! i) .&. 1 == 0 = (fromIntegral $ (tree U.! i) `shiftR` 1)
-			    | otherwise   		= (h (i+1)) + (h (fromIntegral ((tree U.! i) `shiftR` 1)))
+	leafSum tree = helper 0 0 where
+			helper :: Int -> Int -> Int 
+			helper i s | (tree U.! i) .&. 1 == 0 	= s + (fromIntegral $ (tree U.! i) `shiftR` 1)
+				| otherwise   			= (helper (fromIntegral ((tree U.! i) `shiftR` 1))(helper  (i+1) s ) )
 
 
+leafSumFaster :: FlatTree ->   Int
+leafSumFaster ft = unpack 0 0
+		where
+		unpack :: Int -> Int -> Int
+		unpack i acc =  decode i acc (U.unsafeIndex ft i)
+		decode :: Int -> Int -> Word32 -> Int
+		decode i acc v 	| v .&. 1 == 0	=  acc + (fromIntegral $ v `shiftR` 1)
+				| otherwise	= do 
+						let rtix = fromIntegral (v `shiftR` 1)
+						unpack rtix (unpack (i+1) acc )

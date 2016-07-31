@@ -11,23 +11,31 @@ import Formatting
 import Formatting.Clock
 import Control.DeepSeq
 
-
-instance NFData TreeO where
+{-
+instance NFData TreeS where
   rnf (Leaf _) = ()
   rnf (Node lt rt) = rnf lt `seq` rnf rt `seq` ()
-
+-}
 runtest :: String -> IO ()
 runtest fileName = do
---	fileName <- getArgs
+	putStrLn "\nRunning tests and benchmarks for TreeOpt"
 	strm <- readFile  fileName
-	-- let tree = doParse strm
-	let tree = force $ (unboxTree . doParse) strm
 	start <- getTime Monotonic
-        let sum = leafSum tree
-	putStrLn $ show sum
+
+--	let tree =   force  ((unboxTree . doParse) $!  strm)
+	let tree =  ((unboxTree . doParse) $!  strm)
+	construct <- getTime Monotonic
+
+	putStr "Tree constructed in: "
+	fprint  (timeSpecs % string) start construct "\n"
+	let sum = leafSum tree
+	putStrLn $ "Sum computed: " ++ (show sum)
+	first <- getTime Monotonic
+	putStr "LeafSum computed in: "
+	fprint  (timeSpecs % string) construct first "\n"
+	let sum2 = leafSum tree
+	putStrLn $ "Sum computed: " ++ (show sum2)
 	end <- getTime Monotonic
-	fprint (timeSpecs % string) start end "\n"
-
-
-
+	putStr "repeat computation run in: " 
+	fprint  (timeSpecs % string) first end "\n"
 

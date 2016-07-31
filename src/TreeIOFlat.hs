@@ -2,9 +2,7 @@
 module TreeIOFlat where
 
 import TreeSimple
---import qualified Data.Vector.Unboxed as U
 import qualified Data.Vector.Unboxed.Mutable as M
---import Data.Vector.Unboxed.Deriving
 import Data.Word
 import Data.Bits
 
