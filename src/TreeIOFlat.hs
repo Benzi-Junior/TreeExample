@@ -10,12 +10,6 @@ import Data.Bits
 
 
 
--- Next, we define the type for an efficiently stored Tree.
--- I'm using IOVector rather than plain Vector so that I can update
--- in-place.  It would be possible to do this using a plain
--- unboxed Vector by first converting the tree to a list, then using
--- U.fromList, but unclear how well this would fuse ... perhaps
--- an exercise for you?
 
 type TreeIOFlat = M.IOVector Word32
 
@@ -100,18 +94,15 @@ getLeafSumFaster ft = accum 0 0 ((M.length ft)-1)
                                    v <- M.read ft i
                                    let x = if (v .&. 1 ==0 ) then (fromIntegral (shiftR v 1)) else (0)
                                    if (i==e) then (return (s+x)) else (accum (x+s) (i+1) e)
-{- 
-getLeafSumFaster :: TreeIOFlat -> IO Int
-getLeafSumFaster ft = unpack 0 (M.length ft)
-               where
-                   unpack i e | i < e      = M.read ft i >>= decode i e
-                              | otherwise  = return 0
-                   decode i e v | v .&. 1 == 0 = do
-                                                    x <- unpack (i+1) e 
-                                                    return $  (fromIntegral $ v `shiftR` 1) + x
-                                | otherwise    = do 
-                                                    lt <- unpack (i+1) e
-                                                    let rtix = fromIntegral (v `shiftR` 1)
-                                                    rt <- unpack rtix e
-                                                    return $  lt + rt
+
+
+{-
+getLeafSumAcc :: TreeIOFlat -> IO Int
+getLeafSumAcc ft
+    = unpack 0 0
+      where
+          unpack i acc = M.unsafeRead ft i >>= decode i acc
+          decode !i !acc !v | v .&. 1 == 0 = return $ acc + (fromIntegral $ v `shiftR` 1)
+                            | otherwise    = do let rtix = fromIntegral (v `shiftR` 1)
+                                                unpack (i+1) acc >>= unpack rtix
 -}

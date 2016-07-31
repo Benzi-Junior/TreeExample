@@ -7,7 +7,7 @@ import qualified Data.Vector.Unboxed as U
 --import Data.Vector.Unboxed.Deriving
 import Data.Word
 import Data.Bits
-
+import Tree
 
 
 
@@ -28,8 +28,11 @@ plainFlatten :: TreeS -> FlatTree
 plainFlatten tree = U.fromList   (treeToList tree)
 
 
-flatSum :: FlatTree -> Int
-flatSum tree = h 0 where
+
+
+instance Tree FlatTree where 
+--	leafSum :: FlatTree -> Int
+	leafSum tree = h 0 where
 			h i | (tree U.! i) .&. 1 == 0 = (fromIntegral $ (tree U.! i) `shiftR` 1)
 			    | otherwise   		= (h (i+1)) + (h (fromIntegral ((tree U.! i) `shiftR` 1)))
 

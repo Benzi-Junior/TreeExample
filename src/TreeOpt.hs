@@ -61,6 +61,7 @@ instance Tree TreeO where
 		nodeValue :: TreeON -> Int
 		nodeValue (RightPointer right) = leafSum right
 		nodeValue (OLeaf x) = x
-
+{-
 firstlove :: Array Int Int
 firstlove = array (0, 4) [(i, 0) | i <- [0..4]]
+-}
