@@ -1,4 +1,4 @@
-{-# LANGUAGE MultiParamTypeClasses, TemplateHaskell, TypeFamilies, FlexibleInstances #-}
+{-# LANGUAGE MultiParamTypeClasses,BangPatterns, TemplateHaskell, TypeFamilies, FlexibleInstances #-}
 module TreeFlat where
 
 import TreeSimple
@@ -12,6 +12,9 @@ import Tree
 
 
 type FlatTree = U.Vector Word32
+
+forceBang :: FlatTree -> IO  FlatTree
+forceBang !x = return ( id x)
 
 
 treeToList :: TreeS -> [Word32]

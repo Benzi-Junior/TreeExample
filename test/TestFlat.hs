@@ -2,7 +2,7 @@ module TestFlat where
 
 import Lib
 import Tree
-import TreeSimple
+import TreeSimple hiding (forceBang)
 import TreeFlat
 import Parser
 import System.Environment
@@ -22,7 +22,7 @@ runtest fileName = do
 	strm <- readFile  fileName
 	start <- getTime Monotonic
 
-	let tree =   force  ((plainFlatten . doParse) $!  strm)
+	tree <- forceBang  ((plainFlatten . doParse) $!  strm)
 	construct <- getTime Monotonic
 
 	putStr "Tree constructed in: "
