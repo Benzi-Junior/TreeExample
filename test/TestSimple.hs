@@ -24,7 +24,8 @@ runtest fileName = do
 	
 	start <- getTime Monotonic
 	let tree = force $ doParse strm
-	--forceEval tree
+	forceEval tree
+	--putStrLn (show tree)
 	construct  <- getTime Monotonic
 	putStr "Simple tree constucted in: " 
 	fprint (timeSpecs % string) start construct "\n"

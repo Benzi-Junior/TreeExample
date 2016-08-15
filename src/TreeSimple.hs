@@ -1,8 +1,9 @@
+{-# LANGUAGE MultiParamTypeClasses,BangPatterns, TemplateHaskell, TypeFamilies, FlexibleInstances #-}
 module TreeSimple where
 
 import Tree
 
-data TreeS = Node TreeS TreeS | Leaf Int 
+data TreeS = Node TreeS TreeS | Leaf! Int 
 
 instance Tree TreeS where
 --	leafSum :: TreeS -> Int
@@ -27,4 +28,4 @@ forceEval :: TreeS -> IO ()
 forceEval (Node l r)	= do
 				forceEval l
 				forceEval r
-forceEval (Leaf x)	= return () 
+forceEval (Leaf !x)	= return () 

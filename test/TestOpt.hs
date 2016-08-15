@@ -22,8 +22,8 @@ runtest fileName = do
 	strm <- readFile  fileName
 	start <- getTime Monotonic
 
---	let tree =   force  ((unboxTree . doParse) $!  strm)
 	let tree =  ((unboxTree . doParse) $!  strm)
+	forceOptEval tree
 	construct <- getTime Monotonic
 
 	putStr "Tree constructed in: "

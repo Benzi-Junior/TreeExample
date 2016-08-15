@@ -1,3 +1,4 @@
+{-# LANGUAGE MultiParamTypeClasses,BangPatterns, TemplateHaskell, TypeFamilies, FlexibleInstances #-}
 module TreeOpt where
 
 import TreeSimple
@@ -29,31 +30,18 @@ boxNode ((RightPointer ar):xs) = Node (boxNode xs) (boxTree ar)
 boxNode [OLeaf x] = Leaf x
 
 
-
+forceOptEval :: TreeO -> IO ()
+forceOptEval (RootNode arr) = (mapM_ forcer arr)  where
+			forcer :: TreeON -> IO ()
+			forcer (RightPointer right) = forceOptEval right
+			forcer (OLeaf !x) = return ()
 
 
 indexList :: [a] -> [(Int,a)]
 indexList x  =  accumelatedindex 0 x 
 	where   accumelatedindex i [] = []
 		accumelatedindex i (x:xs) = (i,x):(accumelatedindex (i+1) xs)
-{-
-instance IArray UArray TreeS where 
-	{-# INLINE bounds #-}
-	bounds (UArray l u _ _) = (l,u)
-	{-# INLINE numElements #-}
-	numElements (UArray _ _ n _) = n
-	{-# INLINE unsafeArray #-}
-	unsafeArray lu ies = runST (unsafeArrayUArray lu ies 0)
-	{-# INLINE unsafeAt #-}
-	unsafeAt (UArray _ _ _ arr#) (I# i#) = I# (indexIntArray# arr# i#)
-	{-# INLINE unsafeReplace #-}
-	unsafeReplace arr ies = runST (unsafeReplaceUArray arr ies)
-	{-# INLINE unsafeAccum #-}
-	unsafeAccum f arr ies = runST (unsafeAccumUArray f arr ies)
-	{-# INLINE unsafeAccumArray #-}
-	unsafeAccumArray f initialValue lu ies = runST (unsafeAccumArrayUArray f initialValue lu ies)
 
--}
 instance Tree TreeO where
 	--leafSum :: Tree -> Int
 	--leafSum LeftArray = 0
@@ -61,7 +49,3 @@ instance Tree TreeO where
 		nodeValue :: TreeON -> Int
 		nodeValue (RightPointer right) = leafSum right
 		nodeValue (OLeaf x) = x
-{-
-firstlove :: Array Int Int
-firstlove = array (0, 4) [(i, 0) | i <- [0..4]]
--}
