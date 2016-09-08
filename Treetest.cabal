@@ -18,6 +18,7 @@ library
   exposed-modules:     Lib
                       ,TreeSimple
                       ,TreeFlat
+                      ,TreeFullFlat
                       ,TreeIOFlat
                       ,TreeOpt
                       ,Tree
