@@ -1,9 +1,9 @@
-module TestFlat where
+module TestFull where
 
 import Lib
 import Tree
 import TreeSimple hiding (forceBang)
-import TreeFlat
+import TreeFullFlat
 import Parser
 import System.Environment
 import System.Clock
@@ -18,7 +18,7 @@ instance NFData TreeS where
 -}
 runtest :: String -> IO ()
 runtest fileName = do
-	putStrLn "\nRunning tests and benchmarks for TreeFlat"
+	putStrLn "\nRunning tests and benchmarks for TreeFullFlat"
 	strm <- readFile  fileName
 	start <- getTime Monotonic
 
@@ -27,8 +27,10 @@ runtest fileName = do
 
 	putStr "Tree constructed in: "
 	fprint  (timeSpecs % string) start construct "\n"
-	--let sum = leafSum tree
-	let sum = getFrozenSum tree
+	--putStrLn (show tree)
+	let sum = leafSum tree
+	--punt tree
+	let sum = leafSum tree
 	putStrLn $ "Sum computed: " ++ (show sum)
 	first <- getTime Monotonic
 	putStr "LeafSum computed in: "

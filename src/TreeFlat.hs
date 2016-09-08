@@ -1,4 +1,4 @@
-{-# LANGUAGE MultiParamTypeClasses,BangPatterns, TemplateHaskell, TypeFamilies, FlexibleInstances #-}
+{-# LANGUAGE MultiParamTypeClasses, BangPatterns, TemplateHaskell, TypeFamilies, FlexibleInstances #-}
 module TreeFlat where
 
 import TreeSimple
@@ -38,6 +38,16 @@ instance Tree FlatTree where
 			helper :: Int -> Int -> Int 
 			helper i s | (tree U.! i) .&. 1 == 0 	= s + (fromIntegral $ (tree U.! i) `shiftR` 1)
 				| otherwise   			= (helper (fromIntegral ((tree U.! i) `shiftR` 1))(helper  (i+1) s ) )
+
+
+
+getFrozenSum :: FlatTree -> Int
+getFrozenSum ft = unpack 0 0 where
+	unpack i acc = decode i acc (U.unsafeIndex ft i)
+	decode i acc v	| v .&. 1 == 0 = acc + (fromIntegral $ shiftR v 1)
+			| otherwise    = let rtix = fromIntegral (shiftR v 1)
+					   in unpack rtix $ unpack (i+1) acc
+
 
 
 leafSumFaster :: FlatTree ->   Int

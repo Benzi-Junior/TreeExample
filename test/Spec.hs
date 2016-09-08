@@ -1,5 +1,6 @@
 import TestIOFlat
 import TestFlat
+import TestFull
 import TestOpt
 import TestSimple
 --import TreeO
@@ -11,3 +12,4 @@ main = do
 	TestOpt.runtest fileName
 	TestFlat.runtest fileName
 	TestIOFlat.runtest fileName
+	TestFull.runtest fileName
